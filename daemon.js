@@ -1,3 +1,7 @@
+//Import child process to execute OpenSSL commands
+const { exec } = require('child_process');
+
+
 //Setting Daemon function to receive memPool and background operations
 
 var memPool = []
@@ -28,7 +32,15 @@ function generateBlock() {
 //Address validation function for the transactions
 function validateAddress(txs) {
     for (i = 0; i < txs.length; i++) {
-        console.log(txs[i].address.from)
+        let command = 'openssl dgst -sha256 -verify ' + txs[i].address.from + ' -signature ' + txs[i].signature + ' <' + JSON.stringify(txs[i].data) + txs[i].meta.timestamp
+        exec(command, (err, stdout, stderr) => {
+            if (err) {
+                console.error('exec error: ${err}');
+                return;
+            }
+
+            console.log('Verification status: ');
+        });
     }
 }
 

@@ -1,0 +1,11 @@
+//To sign
+$ openssl dgst -sha256 -hex -sign ec-priv.pem ex-message.txt
+
+//To verify
+openssl dgst -sha256 -verify ec-pub.pem -signature ex-signature.der ex-message.txt
+
+//To generate private key
+openssl ecparam -name secp256k1 -genkey -out ec-priv.pem
+
+//To generate public keys
+openssl ec -in ec-priv.pem -pubout -out ec-pub.pem
